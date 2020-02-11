@@ -1,7 +1,7 @@
 '''
 credits: https://github.com/abhishekkrthakur
-The following youtube link takes one through from setting up the machines to fine tune a BERT model
-Source: https://www.youtube.com/watch?v=B_P0ZIXspOU
+The following youtube link takes one through from setting up the machines to fine tuning a BERT model.
+youtube link: https://www.youtube.com/watch?v=B_P0ZIXspOU
 '''
 
 import torch
