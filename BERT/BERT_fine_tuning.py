@@ -18,6 +18,8 @@ from scipy import stats
 import sys
 import warnings
 warnings.filterwarnings('ignore')
+
+
 class BERTBaseUncased(nn.Module):
     def __init__(self,bert_path):
         super(BERTBaseUncased,self).__init__()
@@ -85,7 +87,7 @@ def train_loop_fn(data_loader,model,optimizer,device,scheduler=None):
         xm.optimizer_step(optimizer)
         if scheduler is not None:
             scheduler.step()
-        if bi%10==0:
+        if bi%10==0:#can make change here
             xm.master_print(f"bi={bi},loss={loss}")
             
             
@@ -158,13 +160,13 @@ def run(index):
     )
     valid_data_loader=torch.utils.data.DataLoader(
         valid_dataset,
-        batch_size=8,###change
+        batch_size=8,#can make changes here
         sampler=valid_sampler
     )
     
     device=xm.xla_device()
     
-    lr = 2e-5 * xm.xrt_world_size()###change
+    lr = 2e-5 * xm.xrt_world_size()#can make changes here
     num_train_steps=int(len(train_dataset) / TRAIN_BATCH_SIZE / xm.xrt_world_size() * EPOCHS)
     model=BERTBaseUncased("/home/nizamphoenix/bert-base-uncased/").to(device)
     optimizer=AdamW(model.parameters(),lr=lr,eps = 1e-8)#eps = 1e-8: to prevent any division by zero 
@@ -189,9 +191,14 @@ def run(index):
             spear.append(coef)
         spear=np.mean(spear)
         xm.master_print(f"epoch={epoch},spearman={spear}")
-        xm.save(model.state_dict(),"model3.bin")
+        xm.save(model.state_dict(),"model3.bin")#change every time
         
 
 if __name__=="__main__":
     #sys.path.insert(0, "/home/nizamphoenix/transformers/transformers-master/transformers/")
-    xmp.spawn(run,nprocs=8)
+    xmp.spawn(run,nprocs=8)#running on a TPU v3-8, on GCP
+    #TF 2.0
+#     tpu = tf.distribute.cluster_resolver.TPUClusterResolver()
+#     tf.config.experimental_connect_to_cluster(tpu)
+#     tf.tpu.experimental.initialize_tpu_system(tpu)
+#     tpu_strategy = tf.distribute.experimental.TPUStrategy(tpu)
