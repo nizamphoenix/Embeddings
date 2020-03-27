@@ -1,5 +1,4 @@
 '''
-credits: https://github.com/abhishekkrthakur
 The following youtube link takes one through from setting up virtual machines on GCP, to fine tuning a Base BERT model.
 youtube link: https://www.youtube.com/watch?v=B_P0ZIXspOU
 '''
