@@ -135,17 +135,20 @@ def run(index):
     tokenizer=tokenizer,
     max_len=MAX_LEN
     )
+    
     train_sampler = torch.utils.data.DistributedSampler(
         train_dataset,
         num_replicas=xm.xrt_world_size(),
         rank=xm.get_ordinal(),
         shuffle=True
     )
+    
     train_data_loader=torch.utils.data.DataLoader(
         train_dataset,
         batch_size=TRAIN_BATCH_SIZE,
         sampler=train_sampler
     )
+    
     valid_dataset=BERTDatasetTraining(
     qtitle=df_valid.question_title.values,
     qbody=df_valid.question_body.values,
@@ -154,11 +157,13 @@ def run(index):
     tokenizer=tokenizer,
     max_len=MAX_LEN
     )
+    
     valid_sampler = torch.utils.data.DistributedSampler(
         valid_dataset,
         num_replicas=xm.xrt_world_size(),
         rank=xm.get_ordinal(),
     )
+    
     valid_data_loader=torch.utils.data.DataLoader(
         valid_dataset,
         batch_size=8,#can make changes here
