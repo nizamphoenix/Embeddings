@@ -19,6 +19,9 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
+def loss_fn(outputs,targets):
+    return nn.BCEWithLogitsLoss()(outputs,targets)
+
 class BERTBaseUncased(nn.Module):
     def __init__(self,bert_path):
         super(BERTBaseUncased,self).__init__()
@@ -65,8 +68,7 @@ class BERTDatasetTraining:
                "targets":torch.tensor(self.targets[item,:],dtype=torch.float)
         }
     
-def loss_fn(outputs,targets):
-    return nn.BCEWithLogitsLoss()(outputs,targets)
+
    
 def train_loop_fn(data_loader,model,optimizer,device,scheduler=None):
     model.train()
