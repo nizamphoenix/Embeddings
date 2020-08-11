@@ -164,7 +164,6 @@ def run(index):
         num_replicas=xm.xrt_world_size(),
         rank=xm.get_ordinal(),
     )
-    
     valid_data_loader=torch.utils.data.DataLoader(
         valid_dataset,
         batch_size=8,#can make changes here
